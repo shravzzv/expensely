@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Expensely
 
-## Getting Started
+![Project screenshot](public/expensely.png)  
+[Project demo](https://expensely-money.vercel.app/)
 
-First, run the development server:
+## Description
+
+**Expensely** is a simple, clean, and minimalistic expense tracker built with **Next.js, Tailwind CSS, and ShadCN**.  
+It helps you keep track of your **income, expenses, and overall net worth** in a clear dashboard view.
+
+Stay on top of your money with an elegant and lightweight tool.
+
+## Features
+
+- 📊 Add and manage income & expenses
+- 🧮 Automatic net worth calculation
+- 🎨 Clean UI with ShadCN components
+- ⚡ Fast and responsive (built on Next.js & Tailwind CSS)
+- ☁️ Deployed on Vercel for instant access
+
+## Technologies Used
+
+[![My Skills](https://skillicons.dev/icons?i=nextjs,react,ts,tailwind,vercel,git,github,vscode)](https://skillicons.dev)
+
+## Installation
+
+To install the project, follow these steps:
 
 ```bash
+git clone https://github.com/shravzzv/expensely.git
+cd expensely
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## How to Contribute
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+If you'd like to contribute, follow these steps:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Fork the repository on GitHub.
 
-## Learn More
+2. Clone your fork locally.
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   git clone [your_forked_repository_link]
+   cd expensely
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Create a new branch for your feature or bug fix.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git checkout -b feature-or-bug-fix-name
+   ```
 
-## Deploy on Vercel
+4. Make your changes, commit them, and push them to your fork.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   git add .
+   git commit -m "Your commit message here"
+   git push origin feature-or-bug-fix-name
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Open a Pull Request on GitHub, comparing your branch to the original repository's `main` branch.
+
+## Issue Tracker
+
+Find a bug or want to request a new feature? Please let us know by submitting an issue.
+
+- [Issue Tracker](https://github.com/shravzzv/expensely/issues)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
