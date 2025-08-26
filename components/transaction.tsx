@@ -51,7 +51,9 @@ export default function TransactionCard({
       )}
 
       <p className='text-xs text-muted-foreground'>
-        {transaction.date.toDateString()}
+        {transaction.date
+          ? new Date(transaction.date).toDateString()
+          : 'No date'}
       </p>
 
       {Array.isArray(transaction.category) ? (

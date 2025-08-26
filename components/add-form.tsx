@@ -81,7 +81,6 @@ export default function AddForm({ add }: AddFormProps) {
     }
     add(transaction)
     form.reset()
-    console.log(transaction)
   }
 
   return (
