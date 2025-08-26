@@ -16,6 +16,7 @@ import { TransactionInterface } from '@/types/transaction'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import Transaction from '@/components/transaction'
+import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Page() {
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
@@ -52,6 +53,10 @@ export default function Page() {
 
   return (
     <div className='max-w-2xl mx-auto p-6'>
+      <div className='mb-2'>
+        <ModeToggle />
+      </div>
+
       <Drawer direction='right'>
         <DrawerTrigger asChild>
           <Button>Add Transaction</Button>

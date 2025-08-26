@@ -197,7 +197,10 @@ export default function AddForm({ add }: AddFormProps) {
                       {field.value.map((c) => (
                         <span
                           key={c}
-                          className='flex items-center gap-1 rounded-full bg-gray-200 px-3 py-1 text-sm'
+                          className='flex items-center gap-1 rounded-full
+                   px-3 py-1 text-sm
+                   bg-neutral-200 text-neutral-900
+                   dark:bg-neutral-800 dark:text-neutral-100'
                         >
                           {c}
                           <button
@@ -205,7 +208,10 @@ export default function AddForm({ add }: AddFormProps) {
                             onClick={() =>
                               field.onChange(field.value.filter((v) => v !== c))
                             }
-                            className='text-gray-500 hover:text-red-600'
+                            className='transition-colors
+                     text-neutral-600 hover:text-red-600
+                     dark:text-neutral-400 dark:hover:text-red-400'
+                            aria-label={`Remove ${c}`}
                           >
                             <X size={14} />
                           </button>
@@ -213,6 +219,7 @@ export default function AddForm({ add }: AddFormProps) {
                       ))}
                     </div>
                   )}
+
                   <Select
                     onValueChange={(value) =>
                       field.onChange(
