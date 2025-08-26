@@ -12,8 +12,9 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from '@/components/ui/drawer'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { TransactionInterface } from '@/types/transaction'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useMemo } from 'react'
 import { toast } from 'sonner'
 import Transaction from '@/components/transaction'
 import { ModeToggle } from '@/components/mode-toggle'
@@ -51,6 +52,18 @@ export default function Page() {
     toast.success('Transaction has been updated')
   }
 
+  const netWorth = useMemo(() => {
+    const income = transactions
+      .filter((t) => t.type === 'income')
+      .reduce((sum, t) => sum + t.amount, 0)
+
+    const expenses = transactions
+      .filter((t) => t.type === 'expense')
+      .reduce((sum, t) => sum + t.amount, 0)
+
+    return income - expenses
+  }, [transactions])
+
   return (
     <div className='max-w-2xl mx-auto p-6'>
       <div className='mb-2'>
@@ -59,7 +72,7 @@ export default function Page() {
 
       <Drawer direction='right'>
         <DrawerTrigger asChild>
-          <Button>Add Transaction</Button>
+          <Button className='cursor-pointer'>Add Transaction</Button>
         </DrawerTrigger>
         <DrawerContent>
           <DrawerHeader>
@@ -78,6 +91,28 @@ export default function Page() {
           </DrawerFooter>
         </DrawerContent>
       </Drawer>
+
+      <Card className='mt-6 rounded-2xl border border-border/50 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 shadow-lg'>
+        <CardHeader>
+          <CardTitle className='text-sm font-semibold text-foreground/90'>
+            Net Worth
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <p
+            className={`text-3xl font-bold tracking-tight ${
+              netWorth >= 0
+                ? 'text-emerald-500 drop-shadow-sm'
+                : 'text-red-500 drop-shadow-sm'
+            }`}
+          >
+            ₹{netWorth.toLocaleString()}
+          </p>
+          <p className='text-sm text-muted-foreground mt-1'>
+            Total balance after income & expenses
+          </p>
+        </CardContent>
+      </Card>
 
       <h2 className='text-xl font-semibold mt-8 mb-4'>Ledger</h2>
 
