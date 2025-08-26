@@ -15,8 +15,7 @@ import {
 import { TransactionInterface } from '@/types/transaction'
 import { useState } from 'react'
 import { toast } from 'sonner'
-import { Badge } from '@/components/ui/badge'
-import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react'
+import Transaction from '@/components/transaction'
 
 export default function Page() {
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
@@ -29,6 +28,15 @@ export default function Page() {
   const deleteTransaction = (id: string) => {
     setTransactions((prev) => prev.filter((item) => item.id !== id))
     toast.success('Transaction has been deleted')
+  }
+
+  const updateTransaction = (id: string, updated: TransactionInterface) => {
+    setTransactions((prev) =>
+      prev.map((transaction) =>
+        transaction.id === id ? { ...transaction, ...updated } : transaction
+      )
+    )
+    toast.success('Transaction has been updated')
   }
 
   return (
@@ -59,71 +67,12 @@ export default function Page() {
 
       <div className='space-y-6'>
         {transactions.map((transaction) => (
-          <div
+          <Transaction
             key={transaction.id}
-            className='rounded-lg border p-4 shadow-sm space-y-2'
-          >
-            <div className='flex items-center gap-2'>
-              {transaction.type === 'income' ? (
-                <ArrowUpCircle className='w-5 h-5 text-green-500' />
-              ) : (
-                <ArrowDownCircle className='w-5 h-5 text-red-500' />
-              )}
-              <p
-                className={`text-lg font-semibold ${
-                  transaction.type === 'income'
-                    ? 'text-green-600'
-                    : 'text-red-600'
-                }`}
-              >
-                {transaction.type === 'expense'
-                  ? `-${transaction.amount}`
-                  : `+${transaction.amount}`}
-              </p>
-            </div>
-
-            {transaction.description && (
-              <p className='text-sm'>{transaction.description}</p>
-            )}
-
-            <p className='text-xs text-muted-foreground'>
-              {transaction.date.toDateString()}
-            </p>
-
-            {Array.isArray(transaction.category) ? (
-              <div className='flex flex-wrap gap-2 mt-2'>
-                {transaction.category.map((category, idx) => (
-                  <Badge
-                    key={idx}
-                    variant='secondary'
-                    className='rounded-full px-3 py-1 text-sm'
-                  >
-                    {category}
-                  </Badge>
-                ))}
-              </div>
-            ) : (
-              <Badge
-                variant='secondary'
-                className='rounded-full px-3 py-1 text-sm mt-2'
-              >
-                {transaction.category}
-              </Badge>
-            )}
-
-            <div className='flex gap-2 pt-2'>
-              <Button
-                variant='destructive'
-                size='sm'
-                onClick={() => deleteTransaction(transaction.id!)}
-              >
-                Delete
-              </Button>
-              <Button variant='outline' size='sm'>
-                Update
-              </Button>
-            </div>
-          </div>
+            transaction={transaction}
+            onDelete={deleteTransaction}
+            onUpdate={updateTransaction}
+          />
         ))}
       </div>
     </div>
