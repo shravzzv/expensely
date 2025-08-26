@@ -13,12 +13,24 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { TransactionInterface } from '@/types/transaction'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 import Transaction from '@/components/transaction'
+import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Page() {
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
+
+  useEffect(() => {
+    const stored = localStorage.getItem('transactions')
+    if (stored) {
+      setTransactions(JSON.parse(stored))
+    }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('transactions', JSON.stringify(transactions))
+  }, [transactions])
 
   const addTransaction = (transaction: TransactionInterface) => {
     setTransactions((prev) => [...prev, transaction])
@@ -41,6 +53,10 @@ export default function Page() {
 
   return (
     <div className='max-w-2xl mx-auto p-6'>
+      <div className='mb-2'>
+        <ModeToggle />
+      </div>
+
       <Drawer direction='right'>
         <DrawerTrigger asChild>
           <Button>Add Transaction</Button>
