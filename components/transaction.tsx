@@ -4,6 +4,17 @@ import { TransactionInterface } from '@/types/transaction'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react'
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import UpdateForm from './update-form'
 
 interface TransactionCardProps {
   transaction: TransactionInterface
@@ -72,13 +83,32 @@ export default function TransactionCard({
         >
           Delete
         </Button>
-        <Button
-          variant='outline'
-          size='sm'
-          onClick={() => onUpdate(transaction.id!, transaction)}
-        >
-          Update
-        </Button>
+        <Drawer direction='right'>
+          <DrawerTrigger asChild>
+            <Button variant='outline' size='sm'>
+              Update
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerHeader>
+              <DrawerTitle>Update transaction</DrawerTitle>
+              <DrawerDescription>
+                Modify the details and save changes.
+              </DrawerDescription>
+            </DrawerHeader>
+            <div className='px-4'>
+              <UpdateForm
+                transaction={transaction}
+                onUpdate={(updated) => onUpdate(transaction.id!, updated)}
+              />
+            </div>
+            <DrawerFooter>
+              <DrawerClose asChild>
+                <Button variant='outline'>Cancel</Button>
+              </DrawerClose>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
       </div>
     </div>
   )
