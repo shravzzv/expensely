@@ -116,7 +116,7 @@ export default function Page() {
 
       <h2 className='text-xl font-semibold mt-8 mb-4'>Ledger</h2>
 
-      <div className='grid gap-6 grid-cols-[repeat(auto-fit,minmax(280px,1fr))]'>
+      <div className='grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]'>
         {transactions.map((transaction) => (
           <Transaction
             key={transaction.id}
