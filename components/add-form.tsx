@@ -33,6 +33,8 @@ import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Textarea } from './ui/textarea'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   amount: z.number().int().min(1, 'Amount is required'),
@@ -44,6 +46,7 @@ const formSchema = z.object({
 
 interface AddFormProps {
   add: (transaction: TransactionInterface) => void
+  setIsDrawerOpen: (open: boolean) => void
 }
 
 const categoryOptions = [
@@ -58,7 +61,7 @@ const categoryOptions = [
   'Savings',
 ]
 
-export default function AddForm({ add }: AddFormProps) {
+export default function AddForm({ add, setIsDrawerOpen }: AddFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -80,7 +83,9 @@ export default function AddForm({ add }: AddFormProps) {
       type: values.type,
     }
     add(transaction)
+    toast.success('Transaction has been added')
     form.reset()
+    setIsDrawerOpen(false)
   }
 
   return (
@@ -138,7 +143,11 @@ export default function AddForm({ add }: AddFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder='Optional description' {...field} />
+                <Textarea
+                  placeholder='Optional description'
+                  className='resize-none'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

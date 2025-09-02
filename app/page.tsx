@@ -13,44 +13,14 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { TransactionInterface } from '@/types/transaction'
-import { useEffect, useState, useMemo } from 'react'
-import { toast } from 'sonner'
 import Transaction from '@/components/transaction'
-import { ModeToggle } from '@/components/mode-toggle'
+import { useTransactionStore } from '@/stores/transaction-store'
+import { useMemo, useState } from 'react'
 
 export default function Page() {
-  const [transactions, setTransactions] = useState<TransactionInterface[]>([])
-
-  useEffect(() => {
-    const stored = localStorage.getItem('transactions')
-    if (stored) {
-      setTransactions(JSON.parse(stored))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-  }, [transactions])
-
-  const addTransaction = (transaction: TransactionInterface) => {
-    setTransactions((prev) => [...prev, transaction])
-    toast.success('Transaction has been added')
-  }
-
-  const deleteTransaction = (id: string) => {
-    setTransactions((prev) => prev.filter((item) => item.id !== id))
-    toast.success('Transaction has been deleted')
-  }
-
-  const updateTransaction = (id: string, updated: TransactionInterface) => {
-    setTransactions((prev) =>
-      prev.map((transaction) =>
-        transaction.id === id ? { ...transaction, ...updated } : transaction
-      )
-    )
-    toast.success('Transaction has been updated')
-  }
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const { transactions, addTransaction, deleteTransaction, updateTransaction } =
+    useTransactionStore()
 
   const netWorth = useMemo(() => {
     const income = transactions
@@ -65,12 +35,12 @@ export default function Page() {
   }, [transactions])
 
   return (
-    <div className='max-w-2xl mx-auto p-6'>
-      <div className='mb-2'>
-        <ModeToggle />
-      </div>
-
-      <Drawer direction='right'>
+    <div className='p-4'>
+      <Drawer
+        direction='right'
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
+      >
         <DrawerTrigger asChild>
           <Button className='cursor-pointer'>Add Transaction</Button>
         </DrawerTrigger>
@@ -82,7 +52,7 @@ export default function Page() {
             </DrawerDescription>
           </DrawerHeader>
           <div className='px-4'>
-            <AddForm add={addTransaction} />
+            <AddForm add={addTransaction} setIsDrawerOpen={setIsDrawerOpen} />
           </div>
           <DrawerFooter>
             <DrawerClose asChild>
@@ -92,7 +62,7 @@ export default function Page() {
         </DrawerContent>
       </Drawer>
 
-      <Card className='mt-6 rounded-2xl border border-border/50 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 shadow-lg'>
+      <Card className='mt-6 rounded-2xl border border-border/50 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 shadow-lg w-max'>
         <CardHeader>
           <CardTitle className='text-sm font-semibold text-foreground/90'>
             Net Worth
@@ -106,7 +76,7 @@ export default function Page() {
                 : 'text-red-500 drop-shadow-sm'
             }`}
           >
-            ₹{netWorth.toLocaleString()}
+            ${netWorth.toLocaleString()}
           </p>
           <p className='text-sm text-muted-foreground mt-1'>
             Total balance after income & expenses
@@ -116,7 +86,7 @@ export default function Page() {
 
       <h2 className='text-xl font-semibold mt-8 mb-4'>Ledger</h2>
 
-      <div className='space-y-6'>
+      <div className='grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]'>
         {transactions.map((transaction) => (
           <Transaction
             key={transaction.id}

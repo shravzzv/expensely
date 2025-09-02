@@ -33,6 +33,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { format } from 'date-fns'
+import { Textarea } from './ui/textarea'
 
 const formSchema = z.object({
   amount: z
@@ -59,9 +60,14 @@ const categoryOptions = [
 interface UpdateFormProps {
   transaction: TransactionInterface
   onUpdate: (updated: TransactionInterface) => void
+  setIsDrawerOpen: (open: boolean) => void
 }
 
-export default function UpdateForm({ transaction, onUpdate }: UpdateFormProps) {
+export default function UpdateForm({
+  transaction,
+  onUpdate,
+  setIsDrawerOpen,
+}: UpdateFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -78,6 +84,7 @@ export default function UpdateForm({ transaction, onUpdate }: UpdateFormProps) {
       ...transaction,
       ...values,
     })
+    setIsDrawerOpen(false)
   }
 
   return (
@@ -135,7 +142,11 @@ export default function UpdateForm({ transaction, onUpdate }: UpdateFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder='Optional description' {...field} />
+                <Textarea
+                  placeholder='Optional description'
+                  className='resize-none'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
