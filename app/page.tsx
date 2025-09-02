@@ -35,7 +35,7 @@ export default function Page() {
   }, [transactions])
 
   const addTransaction = (transaction: TransactionInterface) => {
-    setTransactions((prev) => [...prev, transaction])
+    setTransactions((prev) => [transaction, ...prev])
     toast.success('Transaction has been added')
   }
 
