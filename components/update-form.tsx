@@ -125,6 +125,7 @@ export default function UpdateForm({
                 <Input
                   type='number'
                   step='1'
+                  min={0}
                   placeholder='Enter an amount'
                   {...field}
                   onChange={(e) => field.onChange(Number(e.target.value))}
