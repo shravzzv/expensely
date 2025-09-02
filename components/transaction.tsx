@@ -56,8 +56,8 @@ export default function TransactionCard({
           }`}
         >
           {transaction.type === 'expense'
-            ? `-${transaction.amount}`
-            : `+${transaction.amount}`}
+            ? `${transaction.amount}`
+            : `${transaction.amount}`}
         </p>
       </div>
 

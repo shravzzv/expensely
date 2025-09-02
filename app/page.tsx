@@ -13,11 +13,11 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Transaction from '@/components/transaction'
 import { useTransactionStore } from '@/stores/transaction-store'
 import { useMemo, useState } from 'react'
 import { BanknoteArrowDown, BanknoteArrowUp, Plus, Wallet } from 'lucide-react'
 import Link from 'next/link'
+import Transaction from '@/components/transaction'
 
 export default function Page() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -42,7 +42,6 @@ export default function Page() {
 
   return (
     <div className='p-6 md:py-6 md:px-10'>
-      {/* Header */}
       <div className='flex items-center justify-between flex-wrap'>
         <h1 className='text-3xl font-bold tracking-tight'>Welcome</h1>
         <Drawer
@@ -75,9 +74,7 @@ export default function Page() {
         </Drawer>
       </div>
 
-      {/* Summary Cards */}
       <div className='mt-6 grid gap-4 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3'>
-        {/* Net Worth */}
         <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 shadow-lg'>
           <CardHeader>
             <CardTitle className='text-sm font-semibold text-foreground/90 flex items-center justify-between'>
