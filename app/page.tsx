@@ -17,6 +17,7 @@ import Transaction from '@/components/transaction'
 import { useTransactionStore } from '@/stores/transaction-store'
 import { useMemo, useState } from 'react'
 import { BanknoteArrowDown, BanknoteArrowUp, Plus, Wallet } from 'lucide-react'
+import Link from 'next/link'
 
 export default function Page() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -80,7 +81,7 @@ export default function Page() {
         <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 shadow-lg'>
           <CardHeader>
             <CardTitle className='text-sm font-semibold text-foreground/90 flex items-center justify-between'>
-              Net Worth
+              Net Balance
               <Wallet />
             </CardTitle>
           </CardHeader>
@@ -98,54 +99,65 @@ export default function Page() {
           </CardContent>
         </Card>
 
-        {/* Income */}
-        <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950 dark:to-gray-900 shadow-lg'>
-          <CardHeader>
-            <CardTitle className='text-sm font-semibold flex items-center justify-between text-emerald-700 dark:text-emerald-400'>
-              Total Income
-              <BanknoteArrowUp />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className='text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400'>
-              ${income.toLocaleString()}
-            </p>
-            <p className='text-sm text-muted-foreground mt-1'>
-              All recorded income
-            </p>
-          </CardContent>
-        </Card>
+        <Link href={'/income'} className='block'>
+          <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-emerald-50 to-white dark:from-emerald-950 dark:to-gray-900 shadow-lg'>
+            <CardHeader>
+              <CardTitle className='text-sm font-semibold flex items-center justify-between text-emerald-700 dark:text-emerald-400'>
+                Total Income
+                <BanknoteArrowUp />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className='text-2xl font-bold tracking-tight text-emerald-600 dark:text-emerald-400'>
+                ${income.toLocaleString()}
+              </p>
+              <p className='text-sm text-muted-foreground mt-1'>
+                All recorded income
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
 
-        {/* Expenses */}
-        <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-900 shadow-lg'>
-          <CardHeader>
-            <CardTitle className='text-sm font-semibold flex items-center justify-between text-red-700 dark:text-red-400'>
-              Total Expenses
-              <BanknoteArrowDown />
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className='text-2xl font-bold tracking-tight text-red-600 dark:text-red-400'>
-              ${expenses.toLocaleString()}
-            </p>
-            <p className='text-sm text-muted-foreground mt-1'>
-              All recorded expenses
-            </p>
-          </CardContent>
-        </Card>
+        <Link href={'/expenses'} className='block'>
+          <Card className='rounded-2xl border border-border/50 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-900 shadow-lg'>
+            <CardHeader>
+              <CardTitle className='text-sm font-semibold flex items-center justify-between text-red-700 dark:text-red-400'>
+                Total Expenses
+                <BanknoteArrowDown />
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className='text-2xl font-bold tracking-tight text-red-600 dark:text-red-400'>
+                ${expenses.toLocaleString()}
+              </p>
+              <p className='text-sm text-muted-foreground mt-1'>
+                All recorded expenses
+              </p>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
 
-      {/* Transactions list (optional) */}
-      {/* <div className="mt-8 grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
-        {transactions.map((transaction) => (
-          <Transaction
-            key={transaction.id}
-            transaction={transaction}
-            onDelete={deleteTransaction}
-            onUpdate={updateTransaction}
-          />
-        ))}
-      </div> */}
+      <h2 className='text-xl font-medium tracking-tight mt-6'>
+        Recent transactions
+      </h2>
+
+      {transactions.length === 0 ? (
+        <p className='text-muted-foreground text-sm my-4'>
+          No transactions yet. Add one to get started!
+        </p>
+      ) : (
+        <div className='mt-8 grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]'>
+          {transactions.slice(0, 10).map((transaction) => (
+            <Transaction
+              key={transaction.id}
+              transaction={transaction}
+              onDelete={deleteTransaction}
+              onUpdate={updateTransaction}
+            />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
