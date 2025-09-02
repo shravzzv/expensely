@@ -148,7 +148,7 @@ export default function Page() {
         </p>
       ) : (
         <div className='mt-8 grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]'>
-          {transactions.slice(0, 10).map((transaction) => (
+          {transactions.slice(0, 4).map((transaction) => (
             <Transaction
               key={transaction.id}
               transaction={transaction}
