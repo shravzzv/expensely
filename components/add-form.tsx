@@ -34,6 +34,7 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from './ui/textarea'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   amount: z.number().int().min(1, 'Amount is required'),
@@ -82,6 +83,7 @@ export default function AddForm({ add, setIsDrawerOpen }: AddFormProps) {
       type: values.type,
     }
     add(transaction)
+    toast.success('Transaction has been added')
     form.reset()
     setIsDrawerOpen(false)
   }

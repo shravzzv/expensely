@@ -13,44 +13,14 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { TransactionInterface } from '@/types/transaction'
-import { useEffect, useState, useMemo } from 'react'
-import { toast } from 'sonner'
 import Transaction from '@/components/transaction'
+import { useTransactionStore } from '@/stores/transaction-store'
+import { useMemo, useState } from 'react'
 
 export default function Page() {
-  const [transactions, setTransactions] = useState<TransactionInterface[]>([])
-  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
-
-  useEffect(() => {
-    const stored = localStorage.getItem('transactions')
-    if (stored) {
-      setTransactions(JSON.parse(stored))
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem('transactions', JSON.stringify(transactions))
-  }, [transactions])
-
-  const addTransaction = (transaction: TransactionInterface) => {
-    setTransactions((prev) => [transaction, ...prev])
-    toast.success('Transaction has been added')
-  }
-
-  const deleteTransaction = (id: string) => {
-    setTransactions((prev) => prev.filter((item) => item.id !== id))
-    toast.success('Transaction has been deleted')
-  }
-
-  const updateTransaction = (id: string, updated: TransactionInterface) => {
-    setTransactions((prev) =>
-      prev.map((transaction) =>
-        transaction.id === id ? { ...transaction, ...updated } : transaction
-      )
-    )
-    toast.success('Transaction has been updated')
-  }
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const { transactions, addTransaction, deleteTransaction, updateTransaction } =
+    useTransactionStore()
 
   const netWorth = useMemo(() => {
     const income = transactions

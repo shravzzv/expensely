@@ -16,6 +16,7 @@ import {
 } from '@/components/ui/drawer'
 import UpdateForm from './update-form'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 interface TransactionCardProps {
   transaction: TransactionInterface
@@ -29,6 +30,17 @@ export default function TransactionCard({
   onUpdate,
 }: TransactionCardProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
+
+  const handleDelete = () => {
+    onDelete(transaction.id!)
+    toast.success('Transaction has been deleted')
+  }
+
+  const handleUpdate = (updated: TransactionInterface) => {
+    onUpdate(transaction.id!, updated)
+    toast.success('Transaction has been updated')
+    setIsDrawerOpen(false)
+  }
 
   return (
     <div className='rounded-lg border p-4 shadow-sm space-y-2'>
@@ -81,11 +93,7 @@ export default function TransactionCard({
       )}
 
       <div className='flex gap-2 pt-2'>
-        <Button
-          variant='destructive'
-          size='sm'
-          onClick={() => onDelete(transaction.id!)}
-        >
+        <Button variant='destructive' size='sm' onClick={handleDelete}>
           Delete
         </Button>
         <Drawer
@@ -108,7 +116,7 @@ export default function TransactionCard({
             <div className='px-4'>
               <UpdateForm
                 transaction={transaction}
-                onUpdate={(updated) => onUpdate(transaction.id!, updated)}
+                onUpdate={handleUpdate}
                 setIsDrawerOpen={setIsDrawerOpen}
               />
             </div>
