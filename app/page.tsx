@@ -111,7 +111,7 @@ export default function Page() {
                 : 'text-red-500 drop-shadow-sm'
             }`}
           >
-            ₹{netWorth.toLocaleString()}
+            ${netWorth.toLocaleString()}
           </p>
           <p className='text-sm text-muted-foreground mt-1'>
             Total balance after income & expenses
