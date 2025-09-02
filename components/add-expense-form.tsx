@@ -32,7 +32,6 @@ import {
 import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from './ui/textarea'
 import { toast } from 'sonner'
 
@@ -44,7 +43,7 @@ const formSchema = z.object({
   type: z.enum(['income', 'expense'], { message: 'Select type' }),
 })
 
-interface AddFormProps {
+interface AddExpenseFormProps {
   add: (transaction: TransactionInterface) => void
   setIsDrawerOpen: (open: boolean) => void
 }
@@ -61,7 +60,10 @@ const categoryOptions = [
   'Savings',
 ]
 
-export default function AddForm({ add, setIsDrawerOpen }: AddFormProps) {
+export default function AddExpenseForm({
+  add,
+  setIsDrawerOpen,
+}: AddExpenseFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -91,31 +93,6 @@ export default function AddForm({ add, setIsDrawerOpen }: AddFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
-        <FormField
-          control={form.control}
-          name='type'
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Type</FormLabel>
-              <RadioGroup
-                value={field.value}
-                onValueChange={field.onChange}
-                className='flex gap-4'
-              >
-                <div className='flex items-center space-x-2'>
-                  <RadioGroupItem value='income' id='income' />
-                  <label htmlFor='income'>Income</label>
-                </div>
-                <div className='flex items-center space-x-2'>
-                  <RadioGroupItem value='expense' id='expense' />
-                  <label htmlFor='expense'>Expense</label>
-                </div>
-              </RadioGroup>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
         <FormField
           control={form.control}
           name='amount'
