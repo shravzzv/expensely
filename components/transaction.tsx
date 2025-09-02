@@ -15,6 +15,7 @@ import {
   DrawerTrigger,
 } from '@/components/ui/drawer'
 import UpdateForm from './update-form'
+import { useState } from 'react'
 
 interface TransactionCardProps {
   transaction: TransactionInterface
@@ -27,6 +28,8 @@ export default function TransactionCard({
   onDelete,
   onUpdate,
 }: TransactionCardProps) {
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
+
   return (
     <div className='rounded-lg border p-4 shadow-sm space-y-2'>
       <div className='flex items-center gap-2'>
@@ -85,7 +88,11 @@ export default function TransactionCard({
         >
           Delete
         </Button>
-        <Drawer direction='right'>
+        <Drawer
+          direction='right'
+          open={isDrawerOpen}
+          onOpenChange={setIsDrawerOpen}
+        >
           <DrawerTrigger asChild>
             <Button variant='outline' size='sm'>
               Update
@@ -102,6 +109,7 @@ export default function TransactionCard({
               <UpdateForm
                 transaction={transaction}
                 onUpdate={(updated) => onUpdate(transaction.id!, updated)}
+                setIsDrawerOpen={setIsDrawerOpen}
               />
             </div>
             <DrawerFooter>

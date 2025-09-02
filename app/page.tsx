@@ -21,7 +21,7 @@ import { ModeToggle } from '@/components/mode-toggle'
 
 export default function Page() {
   const [transactions, setTransactions] = useState<TransactionInterface[]>([])
-  const [isAddFormOpen, setIsAddFormOpen] = useState<boolean>(false)
+  const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
 
   useEffect(() => {
     const stored = localStorage.getItem('transactions')
@@ -73,8 +73,8 @@ export default function Page() {
 
       <Drawer
         direction='right'
-        open={isAddFormOpen}
-        onOpenChange={setIsAddFormOpen}
+        open={isDrawerOpen}
+        onOpenChange={setIsDrawerOpen}
       >
         <DrawerTrigger asChild>
           <Button className='cursor-pointer'>Add Transaction</Button>
@@ -87,7 +87,7 @@ export default function Page() {
             </DrawerDescription>
           </DrawerHeader>
           <div className='px-4'>
-            <AddForm add={addTransaction} setIsAddFormOpen={setIsAddFormOpen} />
+            <AddForm add={addTransaction} setIsDrawerOpen={setIsDrawerOpen} />
           </div>
           <DrawerFooter>
             <DrawerClose asChild>
