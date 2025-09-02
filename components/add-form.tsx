@@ -45,6 +45,7 @@ const formSchema = z.object({
 
 interface AddFormProps {
   add: (transaction: TransactionInterface) => void
+  setIsAddFormOpen: (open: boolean) => void
 }
 
 const categoryOptions = [
@@ -59,7 +60,7 @@ const categoryOptions = [
   'Savings',
 ]
 
-export default function AddForm({ add }: AddFormProps) {
+export default function AddForm({ add, setIsAddFormOpen }: AddFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -82,6 +83,7 @@ export default function AddForm({ add }: AddFormProps) {
     }
     add(transaction)
     form.reset()
+    setIsAddFormOpen(false)
   }
 
   return (
