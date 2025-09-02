@@ -3,7 +3,7 @@
 import { TransactionInterface } from '@/types/transaction'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import { ArrowUpCircle, ArrowDownCircle } from 'lucide-react'
+import { ArrowUpCircle, ArrowDownCircle, Trash, Pen } from 'lucide-react'
 import {
   Drawer,
   DrawerClose,
@@ -93,7 +93,13 @@ export default function TransactionCard({
       )}
 
       <div className='flex gap-2 pt-2'>
-        <Button variant='destructive' size='sm' onClick={handleDelete}>
+        <Button
+          variant='destructive'
+          size='sm'
+          className='cursor-pointer'
+          onClick={handleDelete}
+        >
+          <Trash />
           Delete
         </Button>
         <Drawer
@@ -102,7 +108,8 @@ export default function TransactionCard({
           onOpenChange={setIsDrawerOpen}
         >
           <DrawerTrigger asChild>
-            <Button variant='outline' size='sm'>
+            <Button variant='outline' size='sm' className='cursor-pointer'>
+              <Pen />
               Update
             </Button>
           </DrawerTrigger>

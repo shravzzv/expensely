@@ -1,6 +1,8 @@
 'use client'
 
-import { TransactionInterface } from '@/types/transaction'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import {
   Form,
@@ -12,12 +14,8 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { Calendar } from '@/components/ui/calendar'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { TransactionInterface } from '@/types/transaction'
+import { v4 as uuidv4 } from 'uuid'
 import {
   Select,
   SelectContent,
@@ -25,25 +23,31 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { X, CalendarIcon } from 'lucide-react'
+import { CalendarIcon, X } from 'lucide-react'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
-
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import * as z from 'zod'
 import { format } from 'date-fns'
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Textarea } from './ui/textarea'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
-  amount: z
-    .number({ error: 'Amount must be a number' })
-    .positive('Amount must be greater than 0'),
+  amount: z.number().int().min(1, 'Amount is required'),
   description: z.string().optional(),
   date: z.date({ error: 'Date is required' }),
   category: z.array(z.string()).min(1, 'Select at least one category'),
   type: z.enum(['income', 'expense'], { message: 'Select type' }),
 })
+
+interface AddTransactionFormProps {
+  add: (transaction: TransactionInterface) => void
+  setIsDrawerOpen: (open: boolean) => void
+}
 
 const categoryOptions = [
   'Food',
@@ -57,39 +61,39 @@ const categoryOptions = [
   'Savings',
 ]
 
-interface UpdateFormProps {
-  transaction: TransactionInterface
-  onUpdate: (updated: TransactionInterface) => void
-  setIsDrawerOpen: (open: boolean) => void
-}
-
-export default function UpdateForm({
-  transaction,
-  onUpdate,
+export default function AddTransactionForm({
+  add,
   setIsDrawerOpen,
-}: UpdateFormProps) {
+}: AddTransactionFormProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      amount: transaction.amount,
-      description: transaction.description ?? '',
-      date: new Date(transaction.date),
-      category: transaction.category,
-      type: transaction.type,
+      amount: 0,
+      description: '',
+      date: undefined,
+      category: [],
+      type: 'expense',
     },
   })
 
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    onUpdate({
-      ...transaction,
-      ...values,
-    })
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    const transaction: TransactionInterface = {
+      id: uuidv4(),
+      amount: values.amount,
+      description: values.description,
+      date: values.date,
+      category: values.category,
+      type: values.type,
+    }
+    add(transaction)
+    toast.success('Transaction has been added')
+    form.reset()
     setIsDrawerOpen(false)
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(handleSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         <FormField
           control={form.control}
           name='type'
@@ -260,7 +264,7 @@ export default function UpdateForm({
           )}
         />
 
-        <Button type='submit'>Update</Button>
+        <Button type='submit'>Submit</Button>
       </form>
     </Form>
   )

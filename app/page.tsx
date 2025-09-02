@@ -1,6 +1,5 @@
 'use client'
 
-import AddForm from '@/components/add-form'
 import { Button } from '@/components/ui/button'
 import {
   Drawer,
@@ -18,6 +17,7 @@ import { useMemo, useState } from 'react'
 import { BanknoteArrowDown, BanknoteArrowUp, Plus, Wallet } from 'lucide-react'
 import Link from 'next/link'
 import Transaction from '@/components/transaction'
+import AddTransactionForm from '@/components/add-transaction-form'
 
 export default function Page() {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
@@ -63,7 +63,10 @@ export default function Page() {
               </DrawerDescription>
             </DrawerHeader>
             <div className='px-4'>
-              <AddForm add={addTransaction} setIsDrawerOpen={setIsDrawerOpen} />
+              <AddTransactionForm
+                add={addTransaction}
+                setIsDrawerOpen={setIsDrawerOpen}
+              />
             </div>
             <DrawerFooter>
               <DrawerClose asChild>
@@ -145,7 +148,7 @@ export default function Page() {
         </p>
       ) : (
         <div className='mt-8 grid gap-6 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]'>
-          {transactions.slice(0, 10).map((transaction) => (
+          {transactions.slice(0, 4).map((transaction) => (
             <Transaction
               key={transaction.id}
               transaction={transaction}
