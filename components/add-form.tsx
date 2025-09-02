@@ -33,6 +33,7 @@ import { Calendar } from '@/components/ui/calendar'
 import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Textarea } from './ui/textarea'
 
 const formSchema = z.object({
   amount: z.number().int().min(1, 'Amount is required'),
@@ -138,7 +139,11 @@ export default function AddForm({ add }: AddFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder='Optional description' {...field} />
+                <Textarea
+                  placeholder='Optional description'
+                  className='resize-none'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>

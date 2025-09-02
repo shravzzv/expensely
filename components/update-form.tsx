@@ -33,6 +33,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { format } from 'date-fns'
+import { Textarea } from './ui/textarea'
 
 const formSchema = z.object({
   amount: z
@@ -135,7 +136,11 @@ export default function UpdateForm({ transaction, onUpdate }: UpdateFormProps) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder='Optional description' {...field} />
+                <Textarea
+                  placeholder='Optional description'
+                  className='resize-none'
+                  {...field}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
