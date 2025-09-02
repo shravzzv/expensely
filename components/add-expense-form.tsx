@@ -163,6 +163,7 @@ export default function AddExpenseForm({
                     selected={field.value}
                     onSelect={field.onChange}
                     captionLayout='dropdown'
+                    disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>
               </Popover>

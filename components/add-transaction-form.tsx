@@ -189,6 +189,7 @@ export default function AddTransactionForm({
                     selected={field.value}
                     onSelect={field.onChange}
                     captionLayout='dropdown'
+                    disabled={(date) => date > new Date()}
                   />
                 </PopoverContent>
               </Popover>
