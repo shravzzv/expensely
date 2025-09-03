@@ -1,7 +1,13 @@
 'use client'
 
 import { usePathname } from 'next/navigation'
-import { Home, ArrowDownCircle, ArrowUpCircle, BarChart3 } from 'lucide-react'
+import {
+  Home,
+  ArrowDownCircle,
+  ArrowUpCircle,
+  BarChart3,
+  Folder,
+} from 'lucide-react'
 import { NavMain } from '@/components/nav-main'
 import { Sidebar, SidebarContent, SidebarRail } from '@/components/ui/sidebar'
 
@@ -10,6 +16,7 @@ const navMain = [
   { title: 'Income', url: '/income', icon: ArrowDownCircle },
   { title: 'Expenses', url: '/expenses', icon: ArrowUpCircle },
   { title: 'Analytics', url: '/analytics', icon: BarChart3 },
+  { title: 'Categories', url: '/categories', icon: Folder },
 ]
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {

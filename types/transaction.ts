@@ -3,6 +3,6 @@ export interface TransactionInterface {
   amount: number
   description?: string
   date: Date
-  category: string[]
+  categoryIds: string[]
   type: 'income' | 'expense'
 }

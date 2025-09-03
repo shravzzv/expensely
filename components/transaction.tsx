@@ -17,6 +17,7 @@ import {
 import UpdateForm from './update-form'
 import { useState } from 'react'
 import { toast } from 'sonner'
+import { useCategoryStore } from '@/stores/category-store'
 
 interface TransactionCardProps {
   transaction: TransactionInterface
@@ -30,6 +31,7 @@ export default function TransactionCard({
   onUpdate,
 }: TransactionCardProps) {
   const [isDrawerOpen, setIsDrawerOpen] = useState<boolean>(false)
+  const { categories } = useCategoryStore()
 
   const handleDelete = () => {
     onDelete(transaction.id!)
@@ -55,9 +57,7 @@ export default function TransactionCard({
             transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
           }`}
         >
-          {transaction.type === 'expense'
-            ? `${transaction.amount}`
-            : `${transaction.amount}`}
+          {transaction.amount}
         </p>
       </div>
 
@@ -71,25 +71,24 @@ export default function TransactionCard({
           : 'No date'}
       </p>
 
-      {Array.isArray(transaction.category) ? (
+      {transaction.categoryIds && transaction.categoryIds.length > 0 && (
         <div className='flex flex-wrap gap-2 mt-2'>
-          {transaction.category.map((category, idx) => (
-            <Badge
-              key={idx}
-              variant='secondary'
-              className='rounded-full px-3 py-1 text-sm'
-            >
-              {category}
-            </Badge>
-          ))}
+          {transaction.categoryIds.map((cId) => {
+            const category = categories.find((cat) => cat.id === cId)
+            if (!category) return null
+            return (
+              <Badge
+                key={cId}
+                className='rounded-full text-xs text-white'
+                style={{
+                  backgroundColor: category.color,
+                }}
+              >
+                {category.name}
+              </Badge>
+            )
+          })}
         </div>
-      ) : (
-        <Badge
-          variant='secondary'
-          className='rounded-full px-3 py-1 text-sm mt-2'
-        >
-          {transaction.category}
-        </Badge>
       )}
 
       <div className='flex gap-2 pt-2'>
@@ -102,6 +101,7 @@ export default function TransactionCard({
           <Trash />
           Delete
         </Button>
+
         <Drawer
           direction='right'
           open={isDrawerOpen}
