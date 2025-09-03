@@ -34,12 +34,13 @@ import { cn } from '@/lib/utils'
 import { format } from 'date-fns'
 import { Textarea } from './ui/textarea'
 import { toast } from 'sonner'
+import { useCategoryStore } from '@/stores/category-store'
 
 const formSchema = z.object({
   amount: z.number().int().min(1, 'Amount is required'),
   description: z.string().optional(),
   date: z.date({ error: 'Date is required' }),
-  category: z.array(z.string()).min(1, 'Select at least one category'),
+  categoryIds: z.array(z.string()).min(1, 'Select at least one category'),
   type: z.enum(['income', 'expense'], { message: 'Select type' }),
 })
 
@@ -48,29 +49,19 @@ interface AddIncomeFormProps {
   setIsDrawerOpen: (open: boolean) => void
 }
 
-const categoryOptions = [
-  'Food',
-  'Rent',
-  'Travel',
-  'Entertainment',
-  'Shopping',
-  'Bills',
-  'Health',
-  'Education',
-  'Savings',
-]
-
 export default function AddIncomeForm({
   add,
   setIsDrawerOpen,
 }: AddIncomeFormProps) {
+  const { categories } = useCategoryStore()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: 0,
       description: '',
       date: undefined,
-      category: [],
+      categoryIds: [],
       type: 'income',
     },
   })
@@ -81,7 +72,7 @@ export default function AddIncomeForm({
       amount: values.amount,
       description: values.description,
       date: values.date,
-      category: values.category,
+      categoryIds: values.categoryIds,
       type: values.type,
     }
     add(transaction)
@@ -174,37 +165,39 @@ export default function AddIncomeForm({
 
         <FormField
           control={form.control}
-          name='category'
+          name='categoryIds'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Category</FormLabel>
+              <FormLabel>Categories</FormLabel>
               <FormControl>
                 <div className='space-y-2'>
                   {field.value.length > 0 && (
                     <div className='flex flex-wrap gap-2'>
-                      {field.value.map((c) => (
-                        <span
-                          key={c}
-                          className='flex items-center gap-1 rounded-full
-                   px-3 py-1 text-sm
-                   bg-neutral-200 text-neutral-900
-                   dark:bg-neutral-800 dark:text-neutral-100'
-                        >
-                          {c}
-                          <button
-                            type='button'
-                            onClick={() =>
-                              field.onChange(field.value.filter((v) => v !== c))
-                            }
-                            className='transition-colors
-                     text-neutral-600 hover:text-red-600
-                     dark:text-neutral-400 dark:hover:text-red-400'
-                            aria-label={`Remove ${c}`}
+                      {field.value.map((id) => {
+                        const category = categories.find((c) => c.id === id)
+                        if (!category) return null
+                        return (
+                          <span
+                            key={id}
+                            className='flex items-center gap-1 rounded-full px-3 py-1 text-sm text-white'
+                            style={{ backgroundColor: category.color }}
                           >
-                            <X size={14} />
-                          </button>
-                        </span>
-                      ))}
+                            {category.name}
+                            <button
+                              type='button'
+                              onClick={() =>
+                                field.onChange(
+                                  field.value.filter((v) => v !== id)
+                                )
+                              }
+                              className='transition-colors text-white/80 hover:text-red-300'
+                              aria-label={`Remove ${category.name}`}
+                            >
+                              <X size={14} />
+                            </button>
+                          </span>
+                        )
+                      })}
                     </div>
                   )}
 
@@ -221,9 +214,9 @@ export default function AddIncomeForm({
                       <SelectValue placeholder='Select categories' />
                     </SelectTrigger>
                     <SelectContent>
-                      {categoryOptions.map((option) => (
-                        <SelectItem key={option} value={option}>
-                          {option}
+                      {categories.map((option) => (
+                        <SelectItem key={option.id} value={option.id}>
+                          {option.name}
                         </SelectItem>
                       ))}
                     </SelectContent>
