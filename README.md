@@ -6,7 +6,7 @@
 ## Description
 
 **Expensely** is a simple, clean, and minimalistic expense tracker built with **Next.js, Tailwind CSS, and ShadCN**.  
-It helps you keep track of your **income, expenses, and overall net worth** in a clear dashboard view.
+It helps you keep track of your **income, expenses, and overall net balance** in a clear dashboard view.
 
 Stay on top of your money with an elegant and lightweight tool.
 
