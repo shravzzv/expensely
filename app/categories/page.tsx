@@ -1,46 +1,57 @@
 'use client'
 
 import { Button } from '@/components/ui/button'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { useCategoryStore } from '@/stores/category-store'
-import { Badge } from '@/components/ui/badge'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import AddCategoryForm from '@/components/add-category-form'
+import { useState } from 'react'
+import Category from '@/components/category'
 
 export default function Page() {
-  const { categories, deleteCategory } = useCategoryStore()
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const { categories } = useCategoryStore()
 
   return (
     <div className='p-6 md:py-6 md:px-10'>
       <div className='flex items-center justify-between flex-wrap mb-6'>
         <h1 className='text-3xl font-bold tracking-tight'>Categories</h1>
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild>
+            <Button className='cursor-pointer'>
+              <Plus />
+              Add Category
+            </Button>
+          </DialogTrigger>
+          <DialogContent className='sm:max-w-md'>
+            <DialogHeader>
+              <DialogTitle>Add a New Category</DialogTitle>
+              <DialogDescription>
+                Enter a name and pick a color for your category.
+              </DialogDescription>
+            </DialogHeader>
+            <div className='px-2'>
+              <AddCategoryForm setIsDialogOpen={setIsDialogOpen} />
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
 
       <div className='flex flex-wrap gap-2'>
         {categories.map((category) => (
-          <div
+          <Category
             key={category.id}
-            className='flex items-center gap-1 rounded-full px-2 py-0.5 bg-muted shadow'
-          >
-            <Badge
-              className='text-white rounded-full'
-              style={{ backgroundColor: category.color }}
-            >
-              {category.name}
-            </Badge>
-
-            <div className='flex items-center'>
-              <Button size='icon' variant='ghost' className='cursor-pointer'>
-                <Pencil />
-              </Button>
-              <Button
-                size='icon'
-                variant='ghost'
-                onClick={() => deleteCategory(category.id)}
-                className='cursor-pointer'
-              >
-                <Trash2 className='text-red-500' />
-              </Button>
-            </div>
-          </div>
+            id={category.id}
+            name={category.name}
+            color={category.color}
+          />
         ))}
       </div>
     </div>
